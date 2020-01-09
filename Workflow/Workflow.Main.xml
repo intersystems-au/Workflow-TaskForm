@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="IRIS" version="26" zv="IRIS for Windows (x86-64) 2019.1 (Build 510U)" ts="2020-01-09 16:45:38">
+<Class name="Workflow.Main">
+<IncludeCode>%occErrors,%ZEN.Utils</IncludeCode>
+<Super>%RegisteredObject</Super>
+<TimeChanged>65387,60273.402712</TimeChanged>
+<TimeCreated>63579,56755.780815</TimeCreated>
+
+<Method name="ListTasksForUser">
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	
+	&sql(SELECT SqlQuery into :sql FROM %Dictionary.QueryDefinition WHERE Id='EnsLib.Workflow.Engine||ListTasksForCurrentUser')
+ 	set sql =$Replace(sql,"Worklist","EnsLib_Workflow.Worklist") //because we need to add schema. Tried: #SQLCompile Path=EnsLib_Workflow and Import EnsLib.Workflow 
+	do ##class(%ZEN.Auxiliary.jsonSQLProvider).%WriteJSONFromSQL(,sql,,$$$MaxCacheInt)
+	return $$$OK
+]]></Implementation>
+</Method>
+
+<Method name="GetTask">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>Id:%String</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	#dim task As EnsLib.Workflow.Worklist
+	return:'##class(EnsLib.Workflow.Worklist).%ExistsId(Id) $$$ERROR($$$GeneralError,"Instance with that id does not exist")
+    set task = ##class(EnsLib.Workflow.Worklist).%OpenId(Id,,.st)
+    return:($$$ISERR(st)) st   
+    set st = ##class(Workflow.jsonProvider).%ObjectToJSON(task)	
+	return st
+]]></Implementation>
+</Method>
+
+<Method name="GetPdfLink">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>Id:%String</FormalSpec>
+<ReturnType>%String</ReturnType>
+<Implementation><![CDATA[
+		
+	// Break id into two separate components
+	set hl7ID=$piece(Id,"|",1)
+	set orcPATH=$piece(Id,"|",2)
+	
+	// Retrieve HL7 message
+	set hl7=##class(EnsLib.HL7.Message).%OpenId(hl7ID)
+	
+	// Instantiate pdf object as Stream FileBinary object
+	// Write pdf object as a file
+	
+	set pdf=##class(%Stream.FileBinary).%New()
+	
+	// Create a file with timestamp in the filename
+	set tFileDir = "C:\Users\pdoolub\devProjects\workflow\CSP\csp\healthshare\seslhd\workflow\pdf\"
+	set tFileName = hl7ID_"_"_$replace($replace($ZDATETIME($ZTIMESTAMP,3,1,6)," ","_"),":","_")_".pdf"
+	do pdf.LinkToFile(tFileDir_tFileName)
+	do pdf.Write()
+	
+	for nOBX=1:1:hl7.GetValueAt(orcPATH_".OBXgrp(*)") {
+		set segment=hl7.GetSegmentAt(orcPATH_".OBXgrp("_nOBX_").OBX")
+		do segment.GetFieldStreamBase64(.pdf,"5(1).5")
+	}
+		
+	do pdf.%Save()
+	
+	//Return only filename
+	quit tFileName
+]]></Implementation>
+</Method>
+</Class>
+</Export>

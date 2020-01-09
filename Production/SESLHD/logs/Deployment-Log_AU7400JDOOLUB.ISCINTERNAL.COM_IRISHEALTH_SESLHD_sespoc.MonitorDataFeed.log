@@ -1,0 +1,32 @@
+2020-01-09 16:55:10.448: Writing to Log File C:\Users\pdoolub\git\Workflow-pdf\Production\SESLHD\logs\Deployment-Log_AU7400JDOOLUB.ISCINTERNAL.COM_IRISHEALTH_SESLHD_sespoc.MonitorDataFeed.log
+2020-01-09 16:55:10.460: Reading Deployment File C:\Users\pdoolub\git\Workflow-pdf\Production\sespoc.MonitorDataFeed.xml
+2020-01-09 16:55:10.479: Getting Document EnsExportNotes
+2020-01-09 16:55:10.523: Deploying to a target that is the same as the source.
+2020-01-09 16:55:10.534: Deployment token taken out. Token for Machine: AU7400JDOOLUB.ISCINTERNAL.COM, Instance: IRISHEALTH, Namespace: SESLHD
+2020-01-09 16:55:10.549: Initialized deployment token and invocation object.
+2020-01-09 16:55:10.561: Generating Contents from Deployment File
+2020-01-09 16:55:10.571: Getting Document EnsExportNotes
+2020-01-09 16:55:10.618: Found in deployment package new EnsExportProduction_2020-01-09 16-47-14_002+11.PRJ
+2020-01-09 16:55:10.628: Found in deployment package new sespoc.MonitorDataFeed.CLS
+2020-01-09 16:55:10.637: Found in deployment package new sespoc.bpl.TriageEMRUpdate.CLS
+2020-01-09 16:55:10.646: Found in deployment package new sespoc.custom.Functions.CLS
+2020-01-09 16:55:10.655: Getting Document EnsExportRemove
+2020-01-09 16:55:10.664: Creating rollback file...
+2020-01-09 16:55:10.673: No existing items to rollback
+2020-01-09 16:55:10.694: Exporting items to rollback file C:\Users\pdoolub\git\Workflow-pdf\Production\SESLHD\rollbacks\Rollback_for_AU7400JDOOLUB.ISCINTERNAL.COM_IRISHEALTH_SESLHD_sespoc.MonitorDataFeed.xml
+2020-01-09 16:55:10.705: Will import new EnsExportNotes.EnsExportProduction_2020-01-09 16-47-14_002+11.PTD
+2020-01-09 16:55:10.714: Will import new EnsExportProduction_2020-01-09 16-47-14_002+11.PRJ
+2020-01-09 16:55:10.722: Will import new sespoc.MonitorDataFeed.CLS
+2020-01-09 16:55:10.731: Will import new sespoc.bpl.TriageEMRUpdate.CLS
+2020-01-09 16:55:10.740: Will import new sespoc.custom.Functions.CLS
+2020-01-09 16:55:10.755: Checking if UpdateProduction needs to be called before starting deployment.
+2020-01-09 16:55:10.764: Production does not need updating
+2020-01-09 16:55:10.773: Applying deployment file...
+2020-01-09 16:55:12.672: Successfully imported EnsExportNotes.EnsExportProduction_2020-01-09 16-47-14_002+11.ptd
+2020-01-09 16:55:12.681: Successfully imported sespoc.MonitorDataFeed.cls
+2020-01-09 16:55:12.690: Successfully imported sespoc.bpl.TriageEMRUpdate.cls
+2020-01-09 16:55:12.700: Successfully imported sespoc.custom.Functions.cls
+2020-01-09 16:55:12.710: Saving host item changes to production class definition.Production Configuration screens open in the portal will need refreshing.
+2020-01-09 16:55:12.729: Production does not need updating
+2020-01-09 16:55:12.739: Finished Deploying successfully
+2020-01-09 16:55:12.751: Closed deployment token and deployment invocation object.

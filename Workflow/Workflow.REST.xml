@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="IRIS" version="26" zv="IRIS for Windows (x86-64) 2019.1 (Build 510U)" ts="2020-01-09 16:43:45">
+<Class name="Workflow.REST">
+<Super>Workflow.AbstractREST</Super>
+<TimeChanged>65387,60158.438224</TimeChanged>
+<TimeCreated>63579,55437.349631</TimeCreated>
+
+<Parameter name="CHARSET">
+<Type>String</Type>
+<Default>utf-8</Default>
+</Parameter>
+
+<Parameter name="UseSession">
+<Type>Integer</Type>
+<Default>1</Default>
+</Parameter>
+
+<XData name="UrlMap">
+<XMLNamespace>http://www.intersystems.com/urlmap</XMLNamespace>
+<Data><![CDATA[
+<Routes>
+<Route Url="/logout" Method="GET" Call="Logout"/>
+<Route Url="/tasks" Method="GET" Call="GetTasks"/>
+<Route Url="/tasks/:id" Method="GET" Call="GetTask"/>
+<Route Url="/tasks/:id" Method="POST" Call="PostTask"/>
+<Route Url="/test" Method="GET" Call="Test"/>
+</Routes>
+]]></Data>
+</XData>
+
+<Method name="Logout">
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	#dim %session As %CSP.Session
+	set st = %session.Logout(1)
+	set %session.EndSession = 1
+	return st
+]]></Implementation>
+</Method>
+
+<Method name="GetTasks">
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[	return ##class(Workflow.Main).ListTasksForUser()
+]]></Implementation>
+</Method>
+
+<Method name="GetTask">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>id:%String</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	// if required to debug
+	// verify if dummy global is set
+	// loop until global exists
+	// print process $job
+	return ##class(Workflow.Main).GetTask(id)
+]]></Implementation>
+</Method>
+
+<Method name="PostTask">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>id:%String</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	#dim %request As %CSP.Request
+	//#dim %request.Content As EnsLib.Workflow.Worklist
+	#dim tTaskResponce As EnsLib.Workflow.TaskResponse
+	
+	// For EnsLib.Workflow.FormEngine compatibility
+	set %request.Data("$ITEMID",1) = id
+	set tTaskResponce = %request.Content.Task
+	set tFormFields = tTaskResponce.%FormFields
+
+	for i = 1:1:$L(tFormFields,",") {
+		set tField = $P(tFormFields,",",i)
+		if (tField '= "") {
+			set %request.Data(tField,1) = tTaskResponce.%FormValues.GetAt(tField)
+		}
+	}
+	return ##class(EnsLib.Workflow.FormEngine).%OnSubmit(tTaskResponce,.msq)
+]]></Implementation>
+</Method>
+
+<Method name="Test">
+<Description>
+Test method</Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+    write "{""Status"": ""OK""}"
+    return $$$OK
+]]></Implementation>
+</Method>
+</Class>
+</Export>

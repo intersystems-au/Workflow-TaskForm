@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="IRIS" version="26" zv="IRIS for Windows (x86-64) 2019.1 (Build 510U)" ts="2020-01-09 16:49:50">
+<Project name="EnsExportProduction_2020-01-09 16-47-14_002+11" LastModified="2020-01-09 16:49:50.915241">
+  <ProjectDescription>Studio Project generated from Production 'sespoc.MonitorDataFeed' at 2020-01-09 05:47:14.002 UTC</ProjectDescription>
+  <Items>
+    <ProjectItem name="sespoc.MonitorDataFeed" type="CLS"></ProjectItem>
+    <ProjectItem name="sespoc.bpl.TriageEMRUpdate" type="CLS"></ProjectItem>
+    <ProjectItem name="sespoc.custom.Functions" type="CLS"></ProjectItem>
+    <ProjectItem name="EnsExportNotes.EnsExportProduction_2020-01-09 16-47-14_002+11.PTD" type="PTD"></ProjectItem>
+  </Items>
+</Project>
+
+
+<Class name="sespoc.MonitorDataFeed">
+<Super>Ens.Production</Super>
+<TimeChanged>65358,34382.462118</TimeChanged>
+<TimeCreated>64205,50160.188621</TimeCreated>
+
+<UDLText name="T">
+<Content><![CDATA[
+/*
+  <Item Name="Ens.Alert" Category="" ClassName="EnsLib.MsgRouter.RoutingEngine" PoolSize="1" Enabled="false" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+    <Setting Target="Host" Name="Validation"></Setting>
+    <Setting Target="Host" Name="BusinessRuleName">sespoc.br.AlertRouting</Setting>
+  </Item>
+  */
+]]></Content>
+</UDLText>
+
+<XData name="ProductionDefinition">
+<Data><![CDATA[
+<Production Name="sespoc.MonitorDataFeed" TestingEnabled="true" LogGeneralTraceEvents="true">
+  <Description></Description>
+  <ActorPoolSize>2</ActorPoolSize>
+  <Setting Target="Adapter" Name="AlertNotificationManager">Alert Notifications</Setting>
+  <Setting Target="Adapter" Name="AlertNotificationOperation">EMailAlert</Setting>
+  <Setting Target="Adapter" Name="AlertNotificationRecipients">iscmyuniqueaddress@gmail.com</Setting>
+  <Item Name="HL7FileOperation" Category="WorkflowActions,ManagedAlerts,Basic" ClassName="EnsLib.HL7.Operation.FileOperation" PoolSize="1" Enabled="true" Foreground="false" Comment="Abnormal Results HL7 File Operation." LogTraceEvents="false" Schedule="">
+    <Setting Target="Adapter" Name="FilePath">C:\InterSystems\File\SESLHD\HL7 Out</Setting>
+    <Setting Target="Host" Name="Filename">%Q%!+(_a).txt</Setting>
+    <Setting Target="Host" Name="AlertOnError">1</Setting>
+  </Item>
+  <Item Name="BadMessageHandler" Category="ManagedAlerts,Basic" ClassName="EnsLib.HL7.Operation.FileOperation" PoolSize="1" Enabled="true" Foreground="false" Comment="Bad messages are sent to this operation." LogTraceEvents="false" Schedule="">
+    <Setting Target="Adapter" Name="FilePath">C:\IRISHealthData\NSWHEALTH\HL7 Bad Messages\</Setting>
+  </Item>
+  <Item Name="EMailAlert" Category="ManagedAlerts,Basic" ClassName="EnsLib.EMail.AlertOperation" PoolSize="1" Enabled="true" Foreground="false" Comment="This sends alerts via e-mail." LogTraceEvents="false" Schedule="">
+    <Setting Target="Adapter" Name="Credentials">GMAIL (20iscadt18)</Setting>
+    <Setting Target="Adapter" Name="SMTPPort">465</Setting>
+    <Setting Target="Adapter" Name="SMTPServer">smtp.gmail.com</Setting>
+    <Setting Target="Adapter" Name="From">iscmyuinqueaddress@gmail.com</Setting>
+    <Setting Target="Adapter" Name="SSLConfig">gmailSSL</Setting>
+    <Setting Target="Adapter" Name="Recipient"></Setting>
+  </Item>
+  <Item Name="PagerAlert" Category="ManagedAlerts,Basic" ClassName="EnsLib.EMail.AlertOperation" PoolSize="1" Enabled="true" Foreground="false" Comment="This sends alerts to a pager via e-mail." LogTraceEvents="false" Schedule="">
+  </Item>
+  <Item Name="HL7FileService" Category="ManagedAlerts,WorkflowActions,Basic" ClassName="EnsLib.HL7.Service.FileService" PoolSize="1" Enabled="true" Foreground="false" Comment="This is a default HL7 File Service." LogTraceEvents="false" Schedule="">
+    <Setting Target="Host" Name="TargetConfigNames">Triage EMR Update</Setting>
+    <Setting Target="Host" Name="MessageSchemaCategory">2.5</Setting>
+    <Setting Target="Adapter" Name="ArchivePath">C:\InterSystems\File\SESLHD\HL7 Archived</Setting>
+    <Setting Target="Adapter" Name="FilePath">C:\InterSystems\File\SESLHD\HL7 In</Setting>
+    <Setting Target="Adapter" Name="WorkPath">C:\InterSystems\File\SESLHD\HL7 Work</Setting>
+    <Setting Target="Host" Name="AlertOnError">1</Setting>
+    <Setting Target="Adapter" Name="FileSpec">*.txt</Setting>
+  </Item>
+  <Item Name="Alert Notifications" Category="ManagedAlerts" ClassName="Ens.Alerting.NotificationManager" PoolSize="1" Enabled="false" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+    <Setting Target="Host" Name="NotificationTransform">sespoc.dtl.AlertManagement.Notification</Setting>
+  </Item>
+  <Item Name="Alert Monitor" Category="ManagedAlerts" ClassName="Ens.Alerting.AlertMonitor" PoolSize="1" Enabled="false" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+  </Item>
+  <Item Name="Ens.Alert" Category="ManagedAlerts" ClassName="Ens.Alerting.AlertManager" PoolSize="1" Enabled="false" Foreground="false" Comment="" LogTraceEvents="true" Schedule="">
+    <Setting Target="Host" Name="CreateManagedAlertRule">sespoc.br.AlertsManagementRule</Setting>
+  </Item>
+  <Item Name="Ens.Alert" Category="" ClassName="EnsLib.MsgRouter.RoutingEngine" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="true" Schedule="">
+    <Setting Target="Host" Name="BusinessRuleName">sespoc.rr.Alerts</Setting>
+  </Item>
+  <Item Name="Triage EMR Update" Category="WorkflowActions" ClassName="sespoc.bpl.TriageEMRUpdate" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+    <Setting Target="Host" Name="AlertOnError">0</Setting>
+  </Item>
+  <Item Name="BedsideDataReviewers" Category="WorkflowActions" ClassName="EnsLib.Workflow.Operation" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+    <Setting Target="Host" Name="AutoCreateRole">1</Setting>
+  </Item>
+</Production>
+]]></Data>
+</XData>
+</Class>
+
+
+<Class name="sespoc.bpl.TriageEMRUpdate">
+<Description>
+</Description>
+<ClassType>persistent</ClassType>
+<ProcedureBlock>1</ProcedureBlock>
+<Super>Ens.BusinessProcessBPL</Super>
+<TimeChanged>65387,39333.364138</TimeChanged>
+<TimeCreated>64218,35307.13226</TimeCreated>
+
+<Storage name="Default">
+<Type>%Storage.Persistent</Type>
+</Storage>
+
+<XData name="BPL">
+<Description>
+BPL Definition</Description>
+<XMLNamespace>http://www.intersystems.com/bpl</XMLNamespace>
+<Data><![CDATA[
+<process language='objectscript' request='EnsLib.HL7.Message' response='Ens.Response' height='2000' width='2000' >
+<context>
+<property name='PreferredWokflowUser' type='%String' initialexpression='""' instantiate='0' >
+<parameters>
+<parameter name='MAXLEN'  value='100' />
+</parameters>
+</property>
+<property name='OrderingPhysicianEmail' type='%String' instantiate='0' >
+<parameters>
+<parameter name='MAXLEN'  value='100' />
+</parameters>
+</property>
+<property name='SelectedWorkflowAction' type='%String' instantiate='0' >
+<parameters>
+<parameter name='MAXLEN'  value='50' />
+</parameters>
+</property>
+<property name='ProviderCode' type='%String' instantiate='0' >
+<parameters>
+<parameter name='MAXLEN'  value='50' />
+</parameters>
+</property>
+<property name='AtomicResults' type='%String' initialexpression='""' instantiate='0' >
+<parameters>
+<parameter name='MAXLEN'  value='32000' />
+</parameters>
+</property>
+<property name='TestName' type='%String' instantiate='0' >
+<parameters>
+<parameter name='MAXLEN'  value='500' />
+</parameters>
+</property>
+<property name='PatientName' type='%String' instantiate='0' >
+<parameters>
+<parameter name='MAXLEN'  value='500' />
+</parameters>
+</property>
+<property name='ActionComment' type='%String' instantiate='0' >
+<parameters>
+<parameter name='MAXLEN'  value='32000' />
+</parameters>
+</property>
+<property name='ReportLink' type='%String' instantiate='0' >
+<parameters>
+<parameter name='MAXLEN'  value='2500' />
+</parameters>
+</property>
+</context>
+<sequence xend='200' yend='1350' >
+<code name='Retrieve Test Name' xpos='200' ypos='250' >
+<![CDATA[ ; Get TestName
+ set testName=request.GetValueAt("PIDgrpgrp(1).ORCgrp(1).OBR:UniversalServiceIdentifier.Text")
+ if testName="" {
+     set testName=request.GetValueAt("PIDgrpgrp(1).ORCgrp(1).OBR:UniversalServiceIdentifier.Identifier")
+ }
+ set context.TestName=testName
+]]]]><![CDATA[>
+</code>
+<if name='ECG Test ?' condition='request.GetValueAt("PIDgrpgrp(1).ORCgrp(1).OBR:UniversalServiceIdentifier.Identifier")="ECG"' xpos='200' ypos='350' xend='200' yend='600' >
+<annotation><![CDATA[Is it an ECG ?
+]]]]><![CDATA[></annotation>
+<true>
+<assign name="Assign to right Nurse" property="context.PreferredWokflowUser" value="&quot;NurseMary&quot;" action="set" xpos='335' ypos='500' >
+<annotation><![CDATA[Demonstrates using an identified, test to a specific Workflow User (Nurse Mary)]]]]><![CDATA[></annotation>
+</assign>
+</true>
+</if>
+<code name='Build Rich Message to use' xpos='200' ypos='700' >
+<annotation><![CDATA[NOTE: Compatible with single ORC messages only. For Multiple ORC's, create external loop]]]]><![CDATA[></annotation>
+<![CDATA[ ; get HTML grid of results from OBX
+ //set context.AtomicResults=##class(sespoc.custom.Functions).GetResultsHTML(request,1,1)
+
+ ; get URL for report from OBX (e.g. ECG)
+ //set type=request.GetValueAt("PIDgrpgrp("_PIDgrpgrp_").ORCgrp("_ORCgrp_").OBXgrp(1).OBX:5.3")
+ if request.GetValueAt("PIDgrpgrp(1).ORCgrp(1).OBXgrp(1).OBX:5.3") = "PDF"{
+ 	set context.ReportLink=##class(sespoc.custom.Functions).GetReportLink(request,1,1)
+ } else {
+ 	; get HTML grid of results from OBX
+ 	set context.AtomicResults=##class(sespoc.custom.Functions).GetResultsHTML(request,1,1)
+ }
+ 
+ ; Get Patient Name
+ set context.PatientName=request.GetValueAt("PIDgrpgrp(1).PIDgrp.PID:PatientName(1).FamilyName.Surname")_", "_request.GetValueAt("PIDgrpgrp(1).PIDgrp.PID:PatientName(1).GivenName")]]]]><![CDATA[>
+</code>
+<call name='Send To Workflow Users' target='BedsideDataReviewers' async='1' xpos='200' ypos='800' >
+<annotation><![CDATA[Create Workflow Task.
+]]]]><![CDATA[></annotation>
+<request type='EnsLib.Workflow.TaskRequest' >
+<assign property="callrequest.%Actions" value="&quot;Update EMR,Do not update&quot;" action="set" />
+<assign property="callrequest.%Subject" value="context.PatientName_&quot; [&quot;_context.TestName_&quot;]&quot;" action="set" />
+<assign property="callrequest.%Message" value="&quot;Monitor data Feed on hold&quot;" action="set" />
+<assign property="callrequest.%UserName" value="context.PreferredWokflowUser" action="set" />
+<assign property="callrequest.%FormFields" value="&quot;Comments&quot;" action="set" />
+<assign property="callrequest.%FormValues" value="context.AtomicResults" action="set" key="&quot;AtomicResults&quot;" />
+<assign property="callrequest.%FormValues" value="context.ReportLink" action="set" key="&quot;ReportLink&quot;" />
+<assign property="callrequest.%FormTemplate" value="&quot;TaskForm.csp&quot;" action="set" />
+</request>
+<response type='EnsLib.Workflow.TaskResponse' >
+<assign property="context.SelectedWorkflowAction" value="callresponse.%Action" action="set" />
+<assign property="context.ActionComment" value="callresponse.%FormValues.GetAt(&quot;Comments&quot;)" action="set" />
+</response>
+</call>
+<sync name='Wait on Action' calls='Send To Workflow Users' type='all' xpos='200' ypos='900' >
+<annotation><![CDATA[No timeout. Waits for a result forever.]]]]><![CDATA[></annotation>
+</sync>
+<if name='Check Action' condition='context.SelectedWorkflowAction="Update EMR"' xpos='200' ypos='1000' xend='200' yend='1250' >
+<true>
+<call name='Send HL7 message out' target='HL7FileOperation' async='0' xpos='335' ypos='1150' >
+<request type='EnsLib.HL7.Message' >
+<assign property="callrequest" value="request" action="set" />
+</request>
+<response type='Ens.Response' />
+</call>
+</true>
+</if>
+</sequence>
+</process>
+]]></Data>
+</XData>
+</Class>
+
+
+<Class name="sespoc.custom.Functions">
+<Description>
+Custom NT Health utility functions</Description>
+<Super>Ens.Rule.FunctionSet</Super>
+<TimeChanged>65358,60603.286121</TimeChanged>
+<TimeCreated>64215,47893.512415</TimeCreated>
+
+<Method name="HasAbnormalResults">
+<Description>
+This function determines wether the HL7 Result Messages passed has OBX segments with
+any abnormality flag.</Description>
+<Final>1</Final>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>hl7</FormalSpec>
+<ReturnType>%Boolean</ReturnType>
+<Implementation><![CDATA[
+	set AbnormalityFound=0
+	
+	//for each PIDgrpgrp
+	for PIDgrpgrp=1:1:hl7.GetValueAt("PIDgrpgrp(*)") {
+		//for each ORCgrp {
+		for ORCgrp=1:1:hl7.GetValueAt("PIDgrpgrp(1).ORCgrp(*)") {
+			//for OBXgrp {
+			for OBXgrp=1:1:hl7.GetValueAt("PIDgrpgrp(1).ORCgrp(1).OBXgrp(*)") {
+				
+				;write !,hl7.GetValueAt("PIDgrpgrp("_PIDgrpgrp_").ORCgrp("_ORCgrp_").OBXgrp("_OBXgrp_").OBX")
+				if hl7.GetValueAt("PIDgrpgrp("_PIDgrpgrp_").ORCgrp("_ORCgrp_").OBXgrp("_OBXgrp_").OBX:AbnormalFlags")'="" {
+					set AbnormalityFound=1
+					quit
+				}
+			}
+		}
+	}
+	
+	quit AbnormalityFound
+]]></Implementation>
+</Method>
+
+<Method name="GetResultsHTML">
+<Description>
+Get HTML of Abnormal results panel.
+Modified by J.D on 30.08.2019 to remove the logic for handling PDF</Description>
+<Final>1</Final>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>hl7,PIDgrpgrp=1,ORCgrp=1</FormalSpec>
+<ReturnType>%String</ReturnType>
+<Implementation><![CDATA[
+	set arrText=""
+	set resultHeadingStyle="font-weight:bold;font-size:12;"
+	set tableStyle="table-layout: auto;  width: 500px;"
+	set oddRowStyle="background-color:aliceblue;"
+	set evenRowStyle=""
+	set abnormalRowStyle="font-weight:bolder;"
+	
+	set segment=hl7.GetSegmentAt("PIDgrpgrp("_PIDgrpgrp_").ORCgrp("_ORCgrp_").OBR")
+	set testName=segment.GetValueAt("UniversalServiceIdentifier.Text")
+	if testName="" {
+		set testName=segment.GetValueAt("UniversalServiceIdentifier.Identifier")
+	}
+	
+	set arrText=arrText_"<table style='"_tableStyle_"'>"
+	set arrText=arrText_"<tr><td colspan=4 style='"_resultHeadingStyle_"'>Results:</td></tr>"
+	
+	set type=hl7.GetValueAt("PIDgrpgrp("_PIDgrpgrp_").ORCgrp("_ORCgrp_").OBXgrp(1).OBX:5.3")
+	if type'="PDF" {
+		for OBXgrp=1:1:hl7.GetValueAt("PIDgrpgrp("_PIDgrpgrp_").ORCgrp("_ORCgrp_").OBXgrp(*)") {
+			set segment=hl7.GetSegmentAt("PIDgrpgrp("_PIDgrpgrp_").ORCgrp("_ORCgrp_").OBXgrp("_OBXgrp_").OBX")
+			set abnormal=segment.GetValueAt("AbnormalFlags")
+			set arrText=arrText_"<tr style='"_$select(OBXgrp#2:oddRowStyle,1:evenRowStyle)_$select((abnormal="N"!(abnormal="")):"",1:abnormalRowStyle)_"'>"
+			set arrText=arrText_"<td >"_segment.GetValueAt("ObservationIdentifier.Text")_"</td><td >"_segment.GetValueAt("ObservationValue")_"&nbsp;"_segment.GetValueAt("Units.Identifier")_"</td><td>"_segment.GetValueAt("ReferencesRange")_"</td><td>"_segment.GetValueAt("AbnormalFlags")_"</td>"
+			set arrText=arrText_"</tr>"
+		}
+	} /*else {
+		;PDF report Provide hyperlink
+		set arrText=arrText_"<tr style='oddRowStyle'>"
+		set arrText=arrText_"<td width='150px'>"
+		//set URL="sespoc.csp.PDFFromHL7.cls?HL7ID="_hl7.%Id()_"&ORCPATH=PIDgrpgrp("_PIDgrpgrp_").ORCgrp("_ORCgrp_")"
+		//set arrText=arrText_"<a href=""javascript:window.open('"_URL_"','"_testName_"',width=300,height=150)"">"
+		set arrText=arrText_"<a ng-href=""{{myVar}}"">"
+		set arrText=arrText_"View "_testName_"</a></td>"
+		set arrText=arrText_"</tr>"
+	}*/
+	
+	set arrText=arrText_"</table>"
+ 
+	quit arrText
+]]></Implementation>
+</Method>
+
+<Method name="GetReportLink">
+<Description>
+Get Report Link for PDF report.</Description>
+<Final>1</Final>
+<ClassMethod>1</ClassMethod>
+<FormalSpec>hl7,PIDgrpgrp=1,ORCgrp=1</FormalSpec>
+<ReturnType>%String</ReturnType>
+<Implementation><![CDATA[
+	set urlText=""
+	set segment=hl7.GetSegmentAt("PIDgrpgrp("_PIDgrpgrp_").ORCgrp("_ORCgrp_").OBR")
+	set testName=segment.GetValueAt("UniversalServiceIdentifier.Text")
+	if testName="" {
+		set testName=segment.GetValueAt("UniversalServiceIdentifier.Identifier")
+	}
+	
+	// Call method to generate pdf and obtain filename
+	
+	set tFileName = ##class(Workflow.Main).GetPdfLink(hl7.%Id()_"|PIDgrpgrp("_PIDgrpgrp_").ORCgrp("_ORCgrp_")")
+	
+	//set urlText="rest/viewreport/"_hl7.%Id()_"|PIDgrpgrp("_PIDgrpgrp_").ORCgrp("_ORCgrp_")"
+	
+	quit "http://localhost:52774/csp/workflow/pdf/"_tFileName
+]]></Implementation>
+</Method>
+
+<Method name="IsFrameworkAlert">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>rq</FormalSpec>
+<ReturnType>%Boolean</ReturnType>
+<Implementation><![CDATA[
+	if rq.%IsA("sespoc.custom.Alert") quit 0
+	quit 1
+]]></Implementation>
+</Method>
+</Class>
+
+
+<Document name="EnsExportNotes.EnsExportProduction_2020-01-09 16-47-14_002+11.PTD"><ProjectTextDocument name="EnsExportNotes.EnsExportProduction_2020-01-09 16-47-14_002+11" description="Export Notes for export EnsExportProduction_2020-01-09 16-47-14_002+11">
+<![CDATA[<Deployment>
+<Creation>
+<Machine>AU7400JDOOLUB.ISCINTERNAL.COM</Machine>
+<Instance>IRISHEALTH</Instance>
+<Namespace>SESLHD</Namespace>
+<SourceProduction>sespoc.MonitorDataFeed</SourceProduction>
+<Username>SuperUser</Username>
+<UTC>2020-01-09 05:49:50.910</UTC>
+</Creation>
+<Notes>
+</Notes>
+<Contents>
+<ExportProject>EnsExportProduction_2020-01-09 16-47-14_002+11</ExportProject>
+<Item num="1">sespoc.MonitorDataFeed.CLS</Item>
+<Item num="2">sespoc.bpl.TriageEMRUpdate.CLS</Item>
+<Item num="3">sespoc.custom.Functions.CLS</Item>
+</Contents>
+<ProductionClassInExport>sespoc.MonitorDataFeed</ProductionClassInExport>
+</Deployment>
+
+]]></ProjectTextDocument>
+</Document></Export>
